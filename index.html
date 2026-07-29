@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🐍❤️</title>
+
+<style>
+
+html,body{
+    margin:0;
+    overflow:hidden;
+    background:black;
+}
+
+canvas{
+    display:block;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+
+function resize(){
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+}
+
+resize();
+window.onresize = resize;
+
+
+ctx.lineWidth = 1.8;
+ctx.shadowBlur = 12;
+
+
+function coracao1(m){
+
+    return 15 * Math.pow(Math.sin(m),3);
+
+}
+
+
+function coracao2(m){
+
+    return 12 * Math.cos(m)
+         - 5 * Math.cos(2*m)
+         - 2 * Math.cos(3*m)
+         - Math.cos(4*m);
+
+}
+
+
+
+let i = 0;
+
+
+
+function definirCor(x){
+
+    if(x < canvas.width / 2){
+
+        ctx.strokeStyle = "#3776AB";
+        ctx.shadowColor = "#3776AB";
+
+    }else{
+
+        ctx.strokeStyle = "#FFD43B";
+        ctx.shadowColor = "#FFD43B";
+
+    }
+
+}
+
+function desenhar(){
+
+
+    if(i >= 360){
+
+        desenharContorno();
+        return;
+
+    }
+
+
+    let angulo = i * Math.PI / 180;
+
+
+    let x = coracao1(angulo) * 18;
+    let y = coracao2(angulo) * 18;
+
+
+    x += canvas.width/2;
+    y = canvas.height/2 - y;
+
+
+    definirCor(x);
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(x,y);
+
+    ctx.lineTo(
+        canvas.width/2,
+        canvas.height/2
+    );
+
+    ctx.stroke();
+
+
+
+    ctx.beginPath();
+
+    ctx.fillStyle = "orange";
+    ctx.shadowColor = "orange";
+
+    ctx.arc(x,y,2,0,Math.PI*2);
+
+    ctx.fill();
+
+
+
+    i++;
+
+    requestAnimationFrame(desenhar);
+
+
+}
+
+function desenharContorno(){
+
+
+    ctx.lineWidth = 2.5;
+
+
+    for(let j = 0; j <= 360; j++){
+
+
+        let angulo = j * Math.PI / 180;
+
+
+        let x = coracao1(angulo) * 18;
+        let y = coracao2(angulo) * 18;
+
+
+        x += canvas.width/2;
+        y = canvas.height/2 - y;
+
+
+
+        definirCor(x);
+
+
+
+        ctx.beginPath();
+
+        ctx.arc(x,y,1,0,Math.PI*2);
+
+        ctx.stroke();
+
+
+    }
+
+
+}
+
+
+
+desenhar();
+
+
+</script>
+
+
+</body>
+
+</html>
